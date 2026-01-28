@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SURYA | DIGITAL ARCHITECT</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@300;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #000000;
+            --accent: #00f2ff;
+            --text: #ffffff;
+            --dim: rgba(255, 255, 255, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll bar */
+        }
+
+        /* --- Background Animation --- */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(0, 242, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(112, 0, 255, 0.1) 0%, transparent 40%);
+            filter: blur(80px);
+        }
+
+        /* --- Custom Cursor --- */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.15s ease-out;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 30px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .logo { font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 5px; }
+
+        /* --- Main Scroll Container --- */
+        .outer-wrapper {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .inner-container {
+            display: flex;
+            width: 400vw; /* 4 sections each 100vw */
+            height: 100vh;
+        }
+
+        section {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            flex-shrink: 0;
+        }
+
+        /* --- Content Styles --- */
+        .huge-text {
+            font-family: 'Syncopate';
+            font-size: clamp(3rem, 12vw, 10rem);
+            line-height: 0.85;
+            text-transform: uppercase;
+        }
+
+        .outline {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--dim);
+            transition: 0.5s ease;
+        }
+
+        .outline:hover {
+            -webkit-text-stroke: 1px var(--accent);
+            color: var(--accent);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 700px;
+        }
+
+        .tech-item {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-right: 20px;
+            font-weight: 300;
+        }
+
+        /* --- Indicators --- */
+        .scroll-hint {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+    <div class="bg-mesh"></div>
+
+    <nav>
+        <div class="logo">NAVEEN</div>
+        <div style="font-size: 0.7rem; letter-spacing: 2px;">STUDENT // DEVELOPER</div>
+    </nav>
+
+    <div class="outer-wrapper">
+        <div class="inner-container">
+            
+            <section id="home">
+                <p style="letter-spacing: 5px; color: var(--accent); margin-bottom: 20px;">[ 01 ] THE BEGINNING</p>
+                <h1 class="huge-text">CREATIVE<br><span class="outline">SYSTEMS</span></h1>
+            </section>
+
+            <section id="about">
+                <div class="glass-card">
+                    <h2 style="font-family: 'Syncopate'; margin-bottom: 20px;">CORE ARSENAL</h2>
+                    <p style="font-size: 1.2rem; color: var(--dim); line-height: 1.6;">
+                        Architecture of high-end <span style="color: white;">Python</span> scripts, 
+                        robust <span style="color: white;">Java</span> logic, and 
+                        aesthetic <span style="color: white;">Web UI</span>. 
+                        Data fueled by <span style="color: white;">SQLite</span>.
+                    </p>
+                </div>
+            </section>
+
+            <section id="projects">
+                <h1 class="huge-text">SELECTED<br><span class="outline">WORKS</span></h1>
+            </section>
+
+            <section id="contact">
+                <h1 class="huge-text">SAY<br>HELLO</h1>
+                <p style="margin-top: 30px; font-size: 1.5rem;">naveendarsipati@gmail.com</p>
+            </section>
+
+        </div>
+    </div>
+
+    <div class="scroll-hint">Scroll Down to Explore</div>
+
+    <script>
+        // 1. Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 2. Custom Cursor Follower
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX - 10,
+                y: e.clientY - 10,
+                duration: 0.1
+            });
+        });
+
+        // 3. The Main Horizontal Scroll Logic
+        const sections = gsap.utils.toArray("section");
+        const innerContainer = document.querySelector(".inner-container");
+
+        gsap.to(innerContainer, {
+            x: () => -(innerContainer.scrollWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".outer-wrapper",
+                pin: true,
+                scrub: 1, // This makes the scroll "effective" and smooth
+                invalidateOnRefresh: true,
+                end: () => "+=" + innerContainer.scrollWidth
+            }
+        });
+
+        // 4. Parallax Effect on Text
+        document.addEventListener('mousemove', (e) => {
+            const xMove = (e.clientX - window.innerWidth / 2) / 30;
+            const yMove = (e.clientY - window.innerHeight / 2) / 30;
+            
+            gsap.to(".huge-text", {
+                x: xMove,
+                y: yMove,
+                duration: 1,
+                stagger: 0.1
+            });
+        });
+
+        // 5. Scale cursor on hover
+        document.querySelectorAll('span, .glass-card, .logo').forEach(item => {
+            item.addEventListener('mouseenter', () => gsap.to(cursor, {scale: 4}));
+            item.addEventListener('mouseleave', () => gsap.to(cursor, {scale: 1}));
+        });
+    </script>
+</body>
+</html>
